@@ -2,6 +2,20 @@
 
 A MLOps pipeline built on the MovieLens 100K dataset — covering experiment tracking, model serving, containerization, and a visual frontend. Built as part of a 20-hour MLOps mastery plan by a DevOps engineer transitioning into ML Platform Engineering.
 
+## 🧠 How It Works — In Plain English
+
+A user watches 10 movies and gives their ratings (1–5 stars).
+The ML model studies that rating pattern and predicts scores
+for every other movie they haven't seen yet.
+It then returns the top 10 highest predicted ones as recommendations.
+
+The model also looks at other users who rated those same 10 movies
+similarly — and borrows their opinions on unseen movies.
+That's why it's called Collaborative Filtering — it collaborates
+across users, not just your own history.
+
+Same core idea behind Netflix, Spotify, and YouTube recommendations.
+
 ---
 
 ## 🏗️ Architecture
