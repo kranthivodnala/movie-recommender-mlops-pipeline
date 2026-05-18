@@ -1,0 +1,10 @@
+.venv/
+.git/
+.dvc/
+mlruns/
+mlartifacts/
+mlflow.db
+data/raw/ml-100k/u.data
+__pycache__/
+*.pyc
+.env

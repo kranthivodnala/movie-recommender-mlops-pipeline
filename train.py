@@ -6,6 +6,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import os
+import pickle
 
 # ── Load MovieLens data ──────────────────────────────────────────
 cols = ["user_id", "item_id", "rating", "timestamp"]
@@ -58,12 +59,19 @@ for n_factors in [50, 100, 150]:
         mlflow.log_metric("rmse", round(rmse, 4))
         mlflow.log_metric("mae",  round(mae,  4))
 
-        # Save the full user-item matrix too (needed for serving)
+        # Save the training matrix
         train_matrix.to_csv("data/processed/user_item_matrix.csv")
         mlflow.log_artifact("data/processed/user_item_matrix.csv")
 
-        # Log model
+        # Log model to MLflow
         mlflow.sklearn.log_model(svd, "model")
+
+        # ── Save best model to disk (inside loop!) ───────────────
+        if n_factors == 50:
+            os.makedirs("models", exist_ok=True)
+            with open("models/recommender.pkl", "wb") as f:
+                pickle.dump(svd, f)
+            print("✅ Best model saved to models/recommender.pkl")
 
         print(f"n_factors={n_factors} | RMSE={rmse:.4f} | MAE={mae:.4f}")
         print(f"  Run ID: {mlflow.active_run().info.run_id}")
