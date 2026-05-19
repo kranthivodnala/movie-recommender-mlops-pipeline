@@ -56,6 +56,9 @@ if [ ! -f "data/raw/ml-100k/u.data" ]; then
 fi
 echo "✅ Dataset found"
 
+# ── Create logs directory ─────────────────────────────────────────
+mkdir -p logs
+
 # ── Start MLflow server ───────────────────────────────────────────
 echo "📊 Starting MLflow server on port 5000..."
 if [ "$MACHINE" = "Mac" ]; then
@@ -64,20 +67,25 @@ elif [ "$MACHINE" = "Windows" ]; then
     cmd /c start "MLflow Server" cmd /k "cd $(pwd) && source .venv/Scripts/activate && mlflow server --host 0.0.0.0 --port 5000"
 else
     # Linux — run in background
-    mlflow server --host 0.0.0.0 --port 5000 > logs/mlflow.log 2>&1 &
-    echo "   MLflow PID: $!"
+    nohup mlflow server --host 0.0.0.0 --port 5000 > logs/mlflow.log 2>&1 &
+    MLFLOW_PID=$!
+    echo "   MLflow PID: $MLFLOW_PID"
 fi
 
-# ── Wait for MLflow ───────────────────────────────────────────────
+# ── Wait for MLflow to be ready ───────────────────────────────────
 echo "⏳ Waiting for MLflow to start..."
-for i in {1..10}; do
+for i in {1..15}; do
     sleep 2
-    curl -s http://localhost:5000/health > /dev/null 2>&1
+    curl -s http://localhost:5000 > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         echo "✅ MLflow is up!"
         break
     fi
-    echo "   Waiting... ($i/10)"
+    echo "   Waiting... ($i/15)"
+    if [ $i -eq 15 ]; then
+        echo "❌ MLflow failed to start. Check logs/mlflow.log"
+        exit 1
+    fi
 done
 
 # ── Train model ───────────────────────────────────────────────────
@@ -86,6 +94,7 @@ echo "🤖 Training model..."
 python train.py
 if [ $? -ne 0 ]; then
     echo "❌ Training failed! Check logs above."
+    echo "💡 Check logs/mlflow.log for MLflow errors"
     exit 1
 fi
 echo "✅ Model trained successfully"
