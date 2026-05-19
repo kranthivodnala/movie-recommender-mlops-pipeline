@@ -1,4 +1,4 @@
-mlflow==3.9.0
+mlflow
 fastapi
 uvicorn
 scikit-learn
