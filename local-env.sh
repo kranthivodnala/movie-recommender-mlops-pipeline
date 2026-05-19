@@ -112,7 +112,7 @@ elif [ "$MACHINE" = "Windows" ]; then
     cmd /c start "MLflow Server" cmd /k "cd $(pwd) && source .venv/Scripts/activate && mlflow server --host 0.0.0.0 --port 5000"
 else
     # Linux — run in background
-    nohup mlflow server --host 0.0.0.0 --port 5000 > logs/mlflow.log 2>&1 &
+    nohup python3 -m mlflow server --host 0.0.0.0 --port 5000 > logs/mlflow.log 2>&1 &
     MLFLOW_PID=$!
     echo "   MLflow PID: $MLFLOW_PID"
 fi
@@ -165,7 +165,7 @@ elif [ "$MACHINE" = "Windows" ]; then
     cmd /c start "FastAPI Server" cmd /k "cd $(pwd) && source .venv/Scripts/activate && uvicorn app.main:app --reload --port 8000"
 else
     # Linux — run in background
-    nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 > logs/fastapi.log 2>&1 &
+    nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 > logs/fastapi.log 2>&1 &
     FASTAPI_PID=$!
     echo "   FastAPI PID: $FASTAPI_PID"
 fi
@@ -197,7 +197,7 @@ elif [ "$MACHINE" = "Windows" ]; then
     cmd /c start "Streamlit App" cmd /k "cd $(pwd) && source .venv/Scripts/activate && streamlit run streamlit_app.py"
 else
     # Linux — run in background
-    nohup streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0 > logs/streamlit.log 2>&1 &
+    nohup python3 -m streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0 > logs/streamlit.log 2>&1 &
     STREAMLIT_PID=$!
     echo "   Streamlit PID: $STREAMLIT_PID"
 fi
