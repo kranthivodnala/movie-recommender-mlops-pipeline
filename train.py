@@ -68,7 +68,7 @@ for n_factors in [50, 100, 150]:
         mlflow.log_artifact("data/processed/user_item_matrix.csv")
 
         # Log model to MLflow
-        mlflow.sklearn.log_model(svd, "model")
+        mlflow.sklearn.log_model(svd, name="model")
 
         # ── Save best model to disk (inside loop!) ───────────────
         if n_factors == 50:
