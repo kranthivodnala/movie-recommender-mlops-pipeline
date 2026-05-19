@@ -8,6 +8,10 @@ from sklearn.model_selection import train_test_split
 import os
 import pickle
 
+# Create required directories if they don't exist
+os.makedirs("data/processed", exist_ok=True)
+os.makedirs("models", exist_ok=True)
+
 # ── Load MovieLens data ──────────────────────────────────────────
 cols = ["user_id", "item_id", "rating", "timestamp"]
 df = pd.read_csv("data/raw/ml-100k/u.data", sep="\t", names=cols)
