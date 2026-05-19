@@ -14,6 +14,13 @@ esac
 echo "🖥️  Detected OS: $MACHINE"
 echo ""
 
+# ── Create required directories ───────────────────────────────────
+echo "📁 Creating required directories..."
+mkdir -p data/processed
+mkdir -p models
+mkdir -p logs
+echo "✅ Directories ready"
+
 # ── Create logs directory ─────────────────────────────────────────
 mkdir -p logs
 
