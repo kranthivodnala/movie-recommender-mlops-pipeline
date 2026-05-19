@@ -14,6 +14,21 @@ esac
 echo "🖥️  Detected OS: $MACHINE"
 echo ""
 
+# ── Create virtual environment if it doesn't exist ───────────────
+if [ ! -d ".venv" ]; then
+    echo "📦 Virtual environment not found — creating one..."
+    python3 -m venv .venv
+    echo "✅ Virtual environment created"
+fi
+
+# ── Activate virtual environment ──────────────────────────────────
+if [ "$MACHINE" = "Windows" ]; then
+    source .venv/Scripts/activate
+else
+    source .venv/bin/activate
+fi
+echo "✅ Virtual environment activated"
+
 # ── Activate virtual environment ──────────────────────────────────
 if [ "$MACHINE" = "Windows" ]; then
     source .venv/Scripts/activate
