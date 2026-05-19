@@ -5,4 +5,6 @@ scikit-learn
 pandas
 numpy
 boto3
+streamlit
+scipy
 evidently
